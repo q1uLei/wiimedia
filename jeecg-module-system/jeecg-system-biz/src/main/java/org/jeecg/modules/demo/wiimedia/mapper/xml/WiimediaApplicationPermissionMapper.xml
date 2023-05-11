@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.wiimedia.mapper.WiimediaApplicationPermissionMapper">
+
+    <select id="queryPermissionList" resultType="org.jeecg.modules.system.vo.UserPermissionVo"
+            parameterType="java.lang.String">
+        select
+            wam.name as applicationName,
+            wam.address as applicationAddress,
+            wam.picture as applicationPicture,
+            su.username
+        from
+            wiimedia_application_permission wap
+                left join
+            wiimedia_application_manage wam on
+                wap.application_id = wam.id
+                left join
+            sys_user su on
+                wap.user_id = su.id
+        where
+            wap.enable_flag = 'Y'
+          and wam.enable_flag = 'Y'
+          <if test="userId !=null and userId !=''">
+          and wap.user_id = #{userId};
+          </if>
+    </select>
+</mapper>
